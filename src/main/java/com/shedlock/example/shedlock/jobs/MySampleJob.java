@@ -11,7 +11,7 @@ public class MySampleJob extends QuartzJobBean {
     }
 
     @Override
-    @SchedulerLock(name = "my_sample_job_lock", lockAtLeastFor = "PT5S", lockAtMostFor = "PT30S")
+    @SchedulerLock(name = "my_sample_job_lock", lockAtLeastFor = "PT1S", lockAtMostFor = "PT10S")
     protected void executeInternal(JobExecutionContext context) {
         LockAssert.assertLocked();
         System.out.println("Hello World!");
