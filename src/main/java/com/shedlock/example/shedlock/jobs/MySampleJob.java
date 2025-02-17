@@ -1,5 +1,7 @@
 package com.shedlock.example.shedlock.jobs;
 
+import net.javacrumbs.shedlock.core.LockAssert;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -22,8 +24,11 @@ public class MySampleJob extends QuartzJobBean {
 	}
 
 	@Override
-	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-		System.out.println("Hello World!");
+    @SchedulerLock(name = "my_sample_job_lock", lockAtLeastFor = "PT5S", lockAtMostFor = "PT30S")
+    protected void executeInternal(JobExecutionContext context) {
+        LockAssert.assertLocked(); // Garante que o lock foi adquirido
+
+        System.out.println("Hello World!");
 	}
 
 }
